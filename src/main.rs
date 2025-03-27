@@ -8,6 +8,8 @@ fn main() {
 
     // Блокируем интернет при запуске
     block_internet();
+    // удаляем правила блокировки
+    // unblock_internet();
 
     // Бесконечный цикл для поддержания блокировки
     loop {
@@ -41,6 +43,28 @@ fn block_internet() {
             "name=\"Block Internet In\"",
             "dir=in",
             "action=block",
+        ])
+        .output();
+}
+
+fn unblock_internet() {
+    let _ = Command::new("netsh")
+        .args(&[
+            "advfirewall",
+            "firewall",
+            "delete",
+            "rule",
+            "name=\"Block Internet\"",
+        ])
+        .output();
+
+    let _ = Command::new("netsh")
+        .args(&[
+            "advfirewall",
+            "firewall",
+            "delete",
+            "rule",
+            "name=\"Block Internet In\"",
         ])
         .output();
 }
